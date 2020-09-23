@@ -1,5 +1,5 @@
 export class States {
   info: string;
-  data: any[];
+  data: [];
   // Name: string;
 }
