@@ -1,0 +1,958 @@
+<form #Form1="ngForm" (ngSubmit)="onFormSubmit(Form1)" class = "container">
+  <h2 id="h4">Leadway Pensure RSA Enrolment Form</h2>
+  <hr>
+  <div class="form-group div_1 display" id="div_1"><br>
+  <!-- <form #f1="ngForm" class="form-group div_1 display" id="div_1"><br> -->
+    <h4>Step 1: Enter Your Personal Information</h4>
+    <div class="form-group">
+
+      <div class="row">
+        <div class="col-lg-3">
+          <label>Title</label> <span class="required"> * </span>
+          <select required ngModel name="myTitle" #myTitle="ngModel" class="form-control"
+          (change)="log(myTitle.value)">
+            <option value="" disabled selected hidden>Select a title...</option>
+            <option *ngFor="let item of titleList">
+                {{item.titleName}}
+            </option>
+          </select>
+          <div *ngIf="myTitle.touched && !myTitle.valid && myTitle.errors.required" class="error">Title is required.</div>
+          <!-- <div *ngIf="myTitle.touched && !myTitle.valid" class="error">
+            <div *ngIf="myTitle.errors.required">Title is required.</div>
+          </div> -->
+          <br>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-lg-3">
+          <label for="firstname">First Name</label> <span class="required"> *</span>
+          <input required class="firstname.ng-touched && firstname.ng-invalid? ng-invalid : firstname.ng-touched && firstname.ng-valid? ng-valid"
+          minlength="2" ngModel name="firstname" #firstname="ngModel"
+          [pattern]=stringPattern
+          (change)="log(firstname)"
+          id="firstname" type="text" class="form-control">
+          <div *ngIf="firstname.touched && !firstname.valid" class="error">
+            <div *ngIf="firstname.errors.minlength">First name doesn't meet the minimum length of {{firstname.errors.minlength.requiredLength}}.</div>
+            <div *ngIf="firstname.errors.pattern">This field requires only alphabets.</div>
+            <div *ngIf="firstname.errors.required">First name is required.</div>
+          </div>
+          <!-- <div class="alert alert-danger" *ngIf="firstname.touched && !firstname.valid" >
+            <div *ngIf="firstname.errors.required">First Name is required</div>
+            <div *ngIf="firstname.errors.minlength">First Name is less than minimum length</div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-3">
+          <label for="middlename">Middle Name</label> <!--span class="required"> *</span-->
+          <input ngModel name="middlename" #middlename="ngModel"
+          (change)="log(middlename.value)"
+          [pattern]=stringPattern
+          id="middlename" type="text" class="form-control">
+          <div *ngIf="middlename.touched && !middlename.valid && middlename.errors.pattern" class="error">Invalid character detected.</div>
+          <!-- <div class="alert alert-danger" *ngIf="middlename.touched && !middlename.valid" >
+            <div *ngIf="middlename.errors.required">Middle Name is required</div>
+            <div *ngIf="middlename.errors.minlength">Middle Name is less than minimum length</div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-3">
+          <label for="last_name">Last Name</label> <span class="required"> *</span>
+          <input required minlength="3" id="last_name" ngModel name="lastname" #lastname="ngModel"
+          (change)="log(lastname.value)"
+          [pattern]=stringPattern
+          type="text" class="form-control">
+          <div *ngIf="lastname.touched && !lastname.valid" class="error">
+            <div *ngIf="lastname.errors.minlength">Last name doesn't meet the minimum length of {{lastname.errors.minlength.requiredLength}}.</div>
+            <div *ngIf="lastname.errors.pattern">This field requires only alphabets.</div>
+            <div *ngIf="lastname.errors.required">Last name is required.</div>
+          </div>
+          <!-- <div class="alert alert-danger" *ngIf="lastname.touched && !lastname.valid" >
+            <div *ngIf="lastname.errors.required">Last name is required.</div>
+            <div *ngIf="lastname.errors.minlength">Last name is less than minimum length.</div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-3">
+          <label for="maiden_name">Maiden Name</label> <!--span class="required"> *</span-->
+          <input id="maiden_name" ngModel name="maidenname" #maidenname="ngModel"
+          (change)="log(maidenname.value)"
+          [pattern]=stringPattern
+          type="text" class="form-control">
+          <div *ngIf="maidenname.touched && !maidenname.valid && maidenname.errors.pattern" class="error">Maiden name is required.</div>
+          <!-- <div class="alert alert-danger" *ngIf="maidenname.touched && !maidenname.valid" > -->
+            <!-- <div *ngIf="maidenname.errors.required">Maiden name is required</div> -->
+            <!-- <div *ngIf="maidenname.errors.minlength">maidenname is less than minimum length</div> -->
+          <!-- </div> -->
+        </div>
+
+      </div>
+
+      <br>
+      <!-- (change)="[isClientMinor() log(dtBirth.,value)]"  -->
+      <div class="row">
+
+        <div class="col-lg-4">
+          <label for="dob">Date of Birth</label> <span class="required"> * </span>
+          <input required ngModel name="dtBirth" #dtBirth="ngModel" maxlength="10"
+          (focusout)="[isClientMinor(), log(dtBirth)]"
+          id="dob" type="date" class="form-control dte">
+          <!-- <div *ngIf="dtBirth.touched && dtBirth.dirty && isClientMinor()" class="error">Client is a minor.</div> -->
+          <div *ngIf="dtBirth.touched" class="error">
+            <div *ngIf="dtBirth.dirty && isClientMinor()">Client is a minor.</div>
+            <div *ngIf="!dtBirth.dirty">Enter your birth date.</div>
+          </div>
+          <!-- <div class="alert alert-danger" *ngIf="dtBirth.touched && !dtBirth.valid" >
+            <div *ngIf="dtBirth.errors.required">Date of birth is required.</div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-4">
+          <label>Marital Status</label> <span class="required"> * </span>
+          <select required ngModel name="mStatus" #mStatus="ngModel" class="form-control">
+            <option value="" disabled selected hidden>Select an option...</option>
+            <option *ngFor="let item of statusList"> {{item.statusName}} </option>
+          </select>
+          <div *ngIf="mStatus.touched && !mStatus.valid" class="error">Marital Status is required.</div>
+
+          <!-- <input required ngModel name="dtBirth" #dtBirth="ngModel"
+          (change)="[isClientMinor(), log(dtBirth.value)]"
+          id="rdb" type="radio" class="form-control dte">
+          <div class="alert alert-danger" *ngIf="dtBirth.touched && !dtBirth.valid" >
+            <div *ngIf="dtBirth.errors.required">Date of birth is required.</div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-4">
+          <label>Gender</label> <span class="required"> * </span> <br>
+
+          <fieldset class="form-group">
+            <!-- <legend>Gender</legend> -->
+
+            <label class="radio-inline col-sm-6" for="rdbM">
+              <input value="Male" required ngModel name="sex" #sex="ngModel"
+              id="rdbM" type="radio"> Male
+            </label>
+            <label class="radio-inline col-sm-6" for="rdbF">
+              <input value="Female" required ngModel name="sex" #sex="ngModel"
+              id="rdbF" type="radio"> Female
+            </label>
+
+          </fieldset>
+
+          <span *ngIf="sex.touched && !sex.valid" class="error">Gender is required.</span>
+          <!-- <div class="alert alert-danger" *ngIf="sex.touched && !sex.valid" >
+            <div *ngIf="sex.errors.required">Gender is required.</div>
+          </div> -->
+        </div>
+
+      </div>
+
+      <br>
+
+      <div class="row">
+
+        <div class="col-lg-3">
+          <label>Country</label> <span class="required"> * </span>
+          <!-- <select [(ngModel)]="myCountry" name="myCountry" (change)="[onSelectCountry(myCountry.value),log(myState.value)]" class="form-control"> -->
+          <select required ngModel name="myCountry" #myCountry="ngModel" (change)="[onSelectCountry(myCountry.value),log(myState.value)]" class="form-control">
+            <option value="" disabled selected hidden>Select a country...</option>
+            <option *ngFor="let item of countryList" value = "{{ item.name }}">
+                {{item.name}}
+            </option>
+          </select>
+        </div>
+
+
+        <div class="col-lg-3">
+          <label>Nationality</label> <!--span class="required"> * </span-->
+          <input type="text" [value]="myNationality" readonly="true" class="form-control">
+          <!-- <input required ngModel name="dtBirth" #dtBirth="ngModel"
+          (change)="[isClientMinor(), log(dtBirth.value)]"
+          id="rdb" type="radio" class="form-control dte">
+          <div class="alert alert-danger" *ngIf="dtBirth.touched && !dtBirth.valid" >
+            <div *ngIf="dtBirth.errors.required">Date of birth is required.</div>
+          </div> -->
+        </div>
+
+
+        <div class="col-lg-3">
+          <label>State of origin</label> <span class="required"> * </span>
+          <select required ngModel name="myState" #myState="ngModel" (change)="[onSelectState(myState.value),log(myState), isDropdownSelected(myState.value)]" id='ms'
+          class="form-control">
+          <!-- <select required [(ngModel)]="myState" [ngModelOptions]="{standalone:true}" (change)="onSelectState()" id='ms' class="form-control"> -->
+            <option value="" enabled selected hidden>Select a state...</option>
+            <option *ngFor="let item of myStateNames">
+                {{item[1].data}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label>LGA</label> <span class="required"> * </span>
+          <select required ngModel name="myLGA" #myLGA="ngModel" class="form-control">
+            <option value="" enabled selected hidden>Select an LGA...</option>
+            <option *ngFor="let item of myLGANames">
+                {{item.lgaName}}
+            </option>
+          </select>
+        </div>
+
+      </div>
+
+      <br>
+
+      <div class="row">
+
+        <div class="col-lg-9">
+          <div class="row">
+            <div class="col-lg-8">
+              <label>Type of ID</label> <span class="required"> * </span> <br>
+
+              <fieldset>
+
+                <div class="row">
+
+                  <div for="rdbID1" class="radio-inline col-md-4 rdbID">
+                    <input value="Passport" required ngModel name="rID" #rID="ngModel"
+                    id="rdbID1" type="radio"> Passport
+                  </div>
+
+                  <div for="rdbID2" class="radio-inline col-md-4 rdbID">
+                    <input value="Driver's license" required ngModel name="rID" #rID="ngModel"
+                    id="rdbID2" type="radio"> Driver's license
+                  </div>
+
+                  <div for="rdbID3" class="radio-inline col-md-4 rdbID">
+                    <input value="National ID card" required ngModel name="rID" #rID="ngModel"
+                    id="rdbID3" type="radio"> National ID card
+                  </div>
+
+                </div>
+
+              </fieldset>
+
+              <span *ngIf="rID.touched && !rID.valid && others.touched && others.value==''"
+              class="error">ID type is required.
+              </span>
+              <!-- <div class="alert alert-danger" *ngIf="rID.touched && !rID.valid && others.touched && others.value==''">
+                <div *ngIf="rID.errors.required">ID type is required.</div>
+              </div> -->
+            </div>
+
+            <div class="col-lg-4">
+              <label for="others">Others (please specify)</label> <!--span class="required"> *</span-->
+              <input ngModel name="others" #others="ngModel"
+              [pattern]=charPattern
+              (change)="log(others.value)"
+              id="others" type="text" class="form-control">
+              <div *ngIf="others.touched && !others.valid && others.errors.pattern" class="error">Invalid character detected.</div>
+
+              <!-- <div class="alert alert-danger" *ngIf="others.touched && !others.valid" >
+                <div *ngIf="others.errors.required">others is required</div>
+                <div *ngIf="others.errors.minlength">others is less than minimum length</div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <label for="id">ID</label> <span class="required"> *</span>
+          <input required ngModel name="id" #id="ngModel"
+          (change)="log(id.value)"
+          [pattern]=idPattern
+          id="id" type="text" class="form-control">
+          <div *ngIf="id.touched && !id.valid && id.errors.pattern" class="error">Invalid character detected.</div>
+          <!-- <div class="alert alert-danger" *ngIf="id.touched && !id.valid" >
+            <div *ngIf="id.errors.required">ID is required</div>
+            <div *ngIf="id.errors.minlength">ID is less than minimum length</div>
+          </div> -->
+        </div>
+
+      </div>
+
+      <br>
+      <br>
+
+      <h4>Contact details</h4><hr>
+      <div class="row">
+        <div class="col-lg-12">
+          <label for="cAddy">Contact Address</label> <span class="required"> *</span>
+          <input required minlength="5" ngModel name="cAddy" #cAddy="ngModel"
+          (change)="log(cAddy.value)"
+          id="cAddy" type="text" class="form-control">
+          <div class="error" *ngIf="cAddy.touched && !cAddy.valid">Contact Address is required.</div>
+          <!-- <div class="alert alert-danger" *ngIf="cAddy.touched && !cAddy.valid" >
+            <div *ngIf="cAddy.errors.required">Contact Address is required</div>
+            <div *ngIf="cAddy.errors.minlength">Contact Address is less than minimum length</div>
+          </div>   -->
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <!-- create new methds for the country,state and LGA controls here -->
+        <div class="col-lg-3">
+          <label>Country</label> <span class="required"> * </span>
+          <select required ngModel name="cCountry" #cCountry="ngModel" (change)="onSelectCCountry(cCountry.value)" class="form-control">
+            <option value="" disabled selected hidden>Select a country...</option>
+            <option *ngFor="let item of countryList">
+                {{item.countryName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label>State</label> <span class="required"> * </span>
+          <select required ngModel name="cState" #cState="ngModel" (change)="onSelectCState(cState.value)" id='cs' class="form-control">
+            <option value="" enabled selected hidden>Select a state...</option>
+            <option *ngFor="let item of cStateNames">
+                {{item.stateName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label>LGA</label> <span class="required"> * </span>
+          <select required ngModel name="cLGA" #cLGA="ngModel" class="form-control">
+            <option value="" enabled selected hidden>Select an LGA...</option>
+            <option *ngFor="let item of cLGANames">
+                {{item.lgaName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label for="town">Town</label> <!--span class="required"> *</span-->
+          <input ngModel name="town" #town="ngModel"
+          (change)="log(town.value)"
+          id="town" type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="town.touched && !town.valid" >
+            <div *ngIf="town.errors.required">Town is required</div>
+            <div *ngIf="town.errors.minlength">Contact Address is less than minimum length</div>
+          </div>   -->
+        </div>
+
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-lg-4">
+          <label for="email" class="control-label">Email Address</label> <span class="required"> * </span>
+          <input
+          required
+          pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+          ngModel
+          name="email"
+          id="email"
+          #em="ngModel"
+          type="email"
+          class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="em.touched && !em.valid">
+            <div *ngIf="em.errors.required">Email is required.</div>
+            <div *ngIf="em.errors.pattern">Email is invalid.</div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-4">
+          <label for="mobilePhone">Mobile Phone</label> <span class="required"> * </span>
+          <input type="tel" required ngModel name="mobilePhone" id="mobilePhone" minlength="11" maxlength="15"
+          #mobPhone="ngModel" pattern="^(0[7-9][0-1]|\+[0-9]*)[0-9]*$" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="mobPhone.touched && !mobPhone.valid">
+            <div *ngIf="mobPhone.errors.pattern">Mobile phone not valid.</div>
+            <div *ngIf="mobPhone.errors.required">Mobile phone is required.</div>
+            <div *ngIf="mobPhone.errors && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'">
+              Please correct the errors and try again.
+            </div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-4">
+          <label for="officePhone">Office Phone</label>
+          <input ngModel name="officePhone" id="officePhone" maxlength="11"
+          #offPhone="ngModel" pattern="^(0[7-9][0-1]|\+[0-9]*)[0-9]*$" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="offPhone.touched && !offPhone.valid">
+            <div *ngIf="offPhone.errors.pattern">Office Phone not valid.</div>
+            <div *ngIf="offPhone.errors.required">Office Phone is required.</div>
+            <div *ngIf="offPhone.errors && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'">
+              Please correct the errors and try again.
+            </div>
+          </div> -->
+        </div>
+      </div>
+
+      <br>
+
+
+      <div class="form-group">
+        <button type="button" class="btn btn-secondary">< Previous</button>
+        <button type="button" class="btn btn-primary r_float" (click)="[onClickNext(), errClear(), logItNow(Form1)]">Next ></button>
+        <!-- (click)="!onSubFormSubmit(f1)? showText() : [onClickNext(), errClear()]">Next ></button> -->
+        <p></p>
+
+        <span class="errDisplay" id="nxt_1">
+          Some required fields are blank.
+        </span>
+
+      </div>
+
+      <!--
+      <div class="form-group">
+        <div class="col-lg-12 alert alert-danger errDisplay" id="nxt_1">
+          Some required fields are blank.
+        </div>
+      </div> -->
+
+
+    </div>
+
+
+  </div>
+
+<!-- </form>  -->
+
+<!-- <form #Form2="ngForm" (ngSubmit)="onFormSubmit(Form2)" class = "container div_2 no-display"> -->
+<!-- PAGE 2 -->
+
+  <div class="form-group div_2 no-display" id="div_2"><br>
+    <H4>Step 2: Enter Your Employment Records</H4>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="form-group">
+            <label for="empN">Name of organization</label> <span class="required"> *</span>
+            <input required ngModel name="empN" #empN="ngModel"
+            (keyup)="logIt(empN.value)"
+            id="empN" type="text" class="form-control">
+            <!-- <div class="alert alert-danger" *ngIf="empN.touched && !empN.valid" >
+              <div *ngIf="empN.errors.required">Employer name is required</div>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <label>Employer Code</label> <!--span class="required"> * </span-->
+          <input type="text" [value]="eCode" readonly="true" class="form-control">
+          <!-- <input required ngModel name="dtBirth" #dtBirth="ngModel"
+          (change)="[isClientMinor(), log(dtBirth.value)]"
+          id="rdb" type="radio" class="form-control dte">
+          <div class="alert alert-danger" *ngIf="dtBirth.touched && !dtBirth.valid" >
+            <div *ngIf="dtBirth.errors.required">Date of birth is required.</div>
+          </div> -->
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="empA">Office Address</label> <span class="required"> *</span>
+            <input required ngModel name="empA" #empA="ngModel"
+            (keyup)="logIt(empA.value)"
+            id="empA" type="text" class="form-control">
+            <!-- <div class="alert alert-danger" *ngIf="empA.touched && !empA.valid" >
+              <div *ngIf="empA.errors.required">Employer address is required</div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-3">
+          <label>Country</label> <span class="required"> * </span>
+          <select required ngModel name="oCountry" #oCountry="ngModel" (change)="onSelectOCountry(oCountry.value)" class="form-control">
+            <option value="" disabled selected hidden>Select a country...</option>
+            <option *ngFor="let item of countryList">
+                {{item.countryName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label>State</label> <span class="required"> * </span>
+          <select required ngModel name="oState" #oState="ngModel" (change)="onSelectOState(oState.value)" id='os' class="form-control">
+            <option value="" enabled selected hidden>Select a state...</option>
+            <option *ngFor="let item of oStateNames">
+                {{item.stateName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label>LGA</label> <span class="required"> * </span>
+          <select required ngModel name="oLGA" #oLGA="ngModel" class="form-control">
+            <option value="" enabled selected hidden>Select an LGA...</option>
+            <option *ngFor="let item of oLGANames">
+                {{item.lgaName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label for="otown">Town</label>
+          <input ngModel name="otown" #otown="ngModel"
+          (change)="log(otown.value)"
+          id="otown" type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="otown.touched && !otown.valid" >
+            <div *ngIf="otown.errors.required">Office town is required</div>
+            <div *ngIf="otown.errors.minlength">Contact Address is less than minimum length</div>
+          </div>   -->
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-lg-4">
+          <label for="des">Designation</label> <span class="required"> * </span>
+          <input required ngModel name="des" #des="ngModel"
+          (change)="log(des.value)"
+          id="des" type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="des.touched && !des.valid" >
+            <div *ngIf="des.errors.required">Designation is required</div>
+            <div *ngIf="des.errors.minlength">Contact Address is less than minimum length</div>
+          </div>   -->
+        </div>
+
+        <div class="col-lg-4">
+          <label for="fileNo">File No. / Service No.</label>
+          <input ngModel name="fileNo" #fileNo="ngModel"
+          (change)="log(fileNo.value)"
+          id="fileNo" type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="fileNo.touched && !fileNo.valid" >
+            <div *ngIf="fileNo.errors.required">File No. / Service No. is required</div>
+            <div *ngIf="fileNo.errors.minlength">Contact Address is less than minimum length</div>
+          </div> -->
+        </div>
+        <div class="col-lg-4">
+          <div class="row">
+            <div class="col-lg-4">
+              <label for="mil" id="lbl">Military?</label>
+              <input ngModel name="mil" #mil="ngModel"
+              (change)="log(mil.value)"
+              id="mil" type="checkbox" class="form-control">
+            </div>
+
+            <div class="col-lg-8">
+              <label for="ret">Retirement age</label>
+              <input
+              ngModel name="ret" #ret="ngModel"
+              (change)="[isRetirementAgeValid(),log(ret.value)]"
+              id="ret" type="number" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-lg-4">
+          <label>State of posting</label> <span class="required"> * </span>
+          <select required ngModel name="pState" #pState="ngModel" id='ps' class="form-control">
+            <option value="" enabled selected hidden>Select a state...</option>
+            <option *ngFor="let item of stateList">
+                {{item.stateName}}
+            </option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <label for="dofe">Date of 1st Employment</label> <span class="required"> * </span>
+          <input required ngModel name="dtEmp" #dtEmp="ngModel" maxlength="10"
+          (change)="log(dtEmp.value)"
+          id="dofe" type="date" class="form-control dte">
+          <!-- <div class="alert alert-danger" *ngIf="dtEmp.touched && !dtEmp.valid" >
+            <div *ngIf="dtEmp.errors.required">Date of 1st Employment is required.</div>
+          </div> -->
+        </div>
+        <div class="col-lg-4">
+          <label for="doc">Date of Confirmation</label> <span class="required"> * </span>
+          <input required ngModel name="dtCon" #dtCon="ngModel" maxlength="10"
+          (change)="log(dtCon.value)"
+          id="doc" type="date" class="form-control dte">
+          <!-- <div class="alert alert-danger" *ngIf="dtCon.touched && !dtCon.valid" >
+            <div *ngIf="dtCon.errors.required">Date of Confirmation is required.</div>
+          </div> -->
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-lg-3">
+          <label for="EEMonth">EE Monthly Contribution (🇳🇬) </label>
+          <input ngModel name="EEMonth" id="EEMonth"
+          #EEMonth="ngModel" class="form-control" type="number">
+          <!-- <div class="alert alert-danger" *ngIf="EEMonth.touched && !EEMonth.valid">
+            <div *ngIf="EEMonth.errors.pattern">EE Monthly Contribution not valid.</div>
+            <div *ngIf="EEMonth.errors.required">EE Monthly Contribution is required.</div>
+          </div> -->
+        </div>
+        <div class="col-lg-3">
+          <label for="ERMonth">ER Monthly Contribution (🇳🇬) </label>
+          <input ngModel name="ERMonth" id="ERMonth"
+          #ERMonth="ngModel" class="form-control" type="number">
+          <!-- <div class="alert alert-danger" *ngIf="ERMonth.touched && !ERMonth.valid">
+            <div *ngIf="ERMonth.errors.pattern">ER Monthly Contribution not valid.</div>
+            <div *ngIf="ERMonth.errors.required">ER Monthly Contribution is required.</div>
+          </div> -->
+        </div>
+        <div class="col-lg-3">
+          <label for="totalContr">Total Contribution (🇳🇬) </label>
+          <input ngModel name="totalContr" id="totalContr"
+          #totalContr="ngModel" class="form-control" type="number">
+          <!-- <div class="alert alert-danger" *ngIf="totalContr.touched && !totalContr.valid">
+            <div *ngIf="totalContr.errors.pattern">Total Contribution not valid.</div>
+            <div *ngIf="totalContr.errors.required">Total Contribution is required.</div>
+          </div> -->
+        </div>
+        <div class="col-lg-3">
+          <label for="annualSalary">Annual Basic Salary (🇳🇬) </label>
+          <input ngModel name="annualSalary" id="annualSalary"
+          #annualSalary="ngModel" class="form-control" type="number">
+          <!-- <div class="alert alert-danger" *ngIf="annualSalary.touched && !annualSalary.valid">
+            <div *ngIf="annualSalary.errors.pattern">ER Monthly Contribution not valid.</div>
+            <div *ngIf="annualSalary.errors.required">ER Monthly Contribution is required.</div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="form-group">
+      <button type="button" class="btn btn-primary" (click)="onClickPrev()">< Previous</button>
+      <button class="btn btn-primary r_float" type="button" (click)="[onClickNext(), errClear()]">Next ></button>
+      <!-- (click)="!onSubFormSubmit(f2)? showText() : [onClickNext(), errClear()]">Next ></button> -->
+      <p></p>
+      <!-- <div class="alert alert-danger errDisplay" id="nxt_2">  -->
+        <!-- Some required fields are blank.  -->
+      <!-- </div>  -->
+    </div>
+
+
+
+    <span class="errDisplay" id="nxt_2">
+      Some required fields are blank.
+    </span>
+
+    <!-- <div class="form-group row">
+      <div class="col-lg-12 alert alert-danger errDisplay" id="nxt_2">
+        Some required fields are blank.
+      </div>
+    </div> -->
+
+  </div>
+
+
+<!-- </form>  -->
+
+
+  <div class="form-group div_3 no-display" id="div_3"><br>
+    <H4>Step 3: Enter Your Next of Kin Records</H4>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-lg-3">
+          <label for="Nmt">Title</label> <span class="required"> * </span>
+          <select ngModel name="myNTitle" #myNTitle="ngModel" id='Nmt' class="form-control">
+            <option value="" disabled selected hidden>Select a title...</option>
+            <option *ngFor="let item of titleList">
+                {{item.titleName}}
+            </option>
+          </select> <br>
+        </div>
+
+        <div class="col-lg-5"></div>
+
+        <div class="col-lg-4">
+          <label>Gender</label> <span class="required"> * </span> <br>
+
+          <fieldset>
+            <!-- <legend>Gender</legend> -->
+
+            <div class="row">
+
+              <div class="col-lg-6 form-control">
+                <input value="Male" required ngModel name="Nsex" #Nsex="ngModel"
+                id="rdbNM" type="radio"> Male
+              </div>
+
+              <div class="col-lg-6 form-control">
+                <input value="Female" required ngModel name="Nsex" #Nsex="ngModel"
+                id="rdbNF" type="radio"> Female
+              </div>
+
+            </div>
+
+          </fieldset>
+          <span *ngIf="Nsex.touched && !Nsex.valid" class="error">Gender is required.</span>
+          <!-- <div class="alert alert-danger" *ngIf="Nsex.touched && !Nsex.valid" >
+            <div *ngIf="Nsex.errors.required">Gender is required.</div>
+          </div> -->
+        </div>
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-lg-4">
+          <label for="Nfirstname">First Name</label> <span class="required"> *</span>
+          <input required minlength="3" ngModel name="Nfirstname" #Nfirstname="ngModel"
+          (change)="log(Nfirstname.value)"
+          id="Nfirstname" type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="Nfirstname.touched && !Nfirstname.valid" >
+            <div *ngIf="Nfirstname.errors.required">First Name is required</div>
+            <div *ngIf="Nfirstname.errors.minlength">First Name is less than minimum length</div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-4">
+          <label for="Nmiddlename">Middle Name</label> <!--span class="required"> *</span-->
+          <input ngModel name="Nmiddlename" #Nmiddlename="ngModel"
+          (change)="log(Nmiddlename.value)"
+          id="Nmiddlename" type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="Nmiddlename.touched && !Nmiddlename.valid" >
+            <div *ngIf="Nmiddlename.errors.required">Middle Name is required</div>
+            <div *ngIf="Nmiddlename.errors.minlength">Middle Name is less than minimum length</div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-4">
+          <label for="Nlast_name">Last Name</label> <span class="required"> *</span>
+          <input required id="Nlast_name" ngModel name="Nlastname" #Nlastname="ngModel"
+          (change)="log(Nlastname.value)"
+          type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="Nlastname.touched && !Nlastname.valid" >
+            <div *ngIf="Nlastname.errors.required">Last name is required.</div>
+            <div *ngIf="Nlastname.errors.minlength">Last name is less than minimum length.</div>
+          </div> -->
+        </div>
+
+      </div> <br>
+
+      <div class="row">
+        <div class="col-lg-4">
+          <label for="N_Rel">Relationship</label> <span class="required"> *</span>
+          <input required id="N_Rel" ngModel name="NRel" #NRel="ngModel"
+          (change)="log(NRel.value)"
+          type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="NRel.touched && !NRel.valid" >
+            <div *ngIf="NRel.errors.required">Relationship is required.</div>
+            <div *ngIf="NRel.errors.minlength">Relationship is less than minimum length.</div>
+          </div> -->
+        </div>
+        <div class="col-lg-4">
+          <label for="NmobilePhone">Mobile Phone</label> <span class="required"> * </span>
+          <input required ngModel name="NmobilePhone" id="NmobilePhone" minlength="11" maxlength="15"
+          #NmobPhone="ngModel" pattern="^(0[7-9][0-1]|\+[0-9]*)[0-9]*$" class="form-control" type="tel">
+          <!-- <div class="alert alert-danger" *ngIf="NmobPhone.touched && !NmobPhone.valid">
+            <div *ngIf="NmobPhone.errors.pattern">NOK Mobile phone not valid.</div>
+            <div *ngIf="NmobPhone.errors.required">NOK Mobile phone is required.</div>
+            <div *ngIf="NmobPhone.errors && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'">
+              Please correct the errors and try again.
+            </div>
+          </div> -->
+        </div>
+        <div class="col-lg-4">
+          <label for="N_email" class="control-label">Email Address</label> <span class="required"> * </span>
+          <input
+          required
+          pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+          ngModel
+          name="N_email"
+          id="N_email"
+          #N_email="ngModel"
+          type="email"
+          class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="N_email.touched && !N_email.valid">
+            <div *ngIf="N_email.errors.required">NOK Email is required.</div>
+            <div *ngIf="N_email.errors.pattern">NOK Email is invalid.</div>
+          </div> -->
+        </div>
+      </div> <br>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <label for="NAddy">Contact Address</label> <span class="required"> *</span>
+          <input required minlength="5" ngModel name="NAddy" #NAddy="ngModel"
+          (change)="log(NAddy.value)"
+          id="NAddy" type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="NAddy.touched && !NAddy.valid" >
+            <div *ngIf="NAddy.errors.required">NOK Contact Address is required</div>
+            <div *ngIf="NAddy.errors.minlength">NOK Contact Address is less than minimum length</div>
+          </div>   -->
+        </div>
+      </div> <br>
+
+      <div class="row">
+        <!-- create new methds for the country,state and LGA controls here -->
+        <div class="col-lg-3">
+          <label>Country</label> <span class="required"> * </span>
+          <select required ngModel name="NCountry" #NCountry="ngModel" (change)="onSelectNCountry(NCountry.value)" class="form-control">
+            <option value="" disabled selected hidden>Select a country...</option>
+            <option *ngFor="let item of countryList">
+                {{item.countryName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label>State</label> <span class="required"> * </span>
+          <select required ngModel name="NState" #NState="ngModel" (change)="onSelectNState(NState.value)" class="form-control">
+            <option value="" enabled selected hidden>Select a state...</option>
+            <option *ngFor="let item of NStateNames">
+                {{item.stateName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label>LGA</label> <span class="required"> * </span>
+          <select required ngModel name="NLGA" #NLGA="ngModel" class="form-control">
+            <option value="" enabled selected hidden>Select an LGA...</option>
+            <option *ngFor="let item of NLGANames">
+                {{item.lgaName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label for="Ntown">Town</label>
+          <input ngModel name="Ntown" #Ntown="ngModel"
+          (change)="log(Ntown.value)"
+          id="Ntown" type="text" class="form-control">
+          <!-- <div class="alert alert-danger" *ngIf="Ntown.touched && !Ntown.valid" >
+            <div *ngIf="Ntown.errors.required">Town is required</div>
+          </div>   -->
+        </div>
+
+      </div>
+    </div>
+
+    <br>
+
+    <div class="form-group">
+      <button type="button" class="btn btn-primary" (click)="onClickPrev()">< Previous</button>
+      <!-- <button class="btn btn-primary r_float" type="button"
+      (click)="!homeAddy.valid || !dtBirth.valid || isClientMinor()? showText() : [onClickNext(), errClear()]">Next ></button> -->
+      <button type="button" class="btn btn-primary r_float" (click)="[onClickNext(), errClear()]">Next ></button>
+      <!-- (click)="!onSubFormSubmit(f3)? showText() : [onClickNext(), errClear()]">Next ></button> -->
+      <p></p>
+      <!-- <div class="alert alert-danger errDisplay" id="nxt_3">  -->
+        <!-- Some required fields are blank.  -->
+      <!-- </div>  -->
+
+    </div>
+
+    <span class="errDisplay" id="nxt_3">
+      Some required fields are blank.
+    </span>
+
+    <!-- <div class="form-group row">
+      <div class="col-lg-12 alert alert-danger errDisplay" id="nxt_3">
+        Some required fields are blank.
+      </div>
+    </div> -->
+
+  </div>
+
+
+
+  <div class="form-group div_4 no-display" id="div_4"><br>
+    <H4>Step 4: Please upload your passport photo and e-signature</H4>
+    <div class="form-group">
+
+      <!-- <div class="row">
+        <div class="col-lg-5">
+          <label for="passport">Passport</label>
+          <img width="200" height="200" [src]="imageURL" class="imageFrame" alt=""><br>
+          <input type="file" >
+        </div>
+        <div class="col-lg-2"></div>
+        <div class="col-lg-5">
+          <label for="passport">Signature</label>
+          <img width="200" height="200" [src]="imageURL" class="imageFrame" alt=""><br>
+          <input type="file" >
+        </div>
+      </div> -->
+
+
+      <br>
+
+      <div class="row">
+
+        <div class="col-lg-12">
+
+          <fieldset>
+            <legend>Biometrics</legend>
+            <!-- <div class="form-control"> <img src="" alt="trulli" width="500" height="500"/> </div> -->
+            Passport photo: <input required ngModel name="passport" #passport="ngModel" type="file" accept="image/*" class="form-control"> <br>
+            E-signature: <input required ngModel name="sign" #sign="ngModel" type="file" accept="image/*" class="form-control">
+          </fieldset>
+
+        </div>
+      </div>
+    </div> <br>
+    <!--
+    <div class="row">
+      <div class="col-lg-4">
+        <button type="button" class="btn btn-primary" (click)="onClickPrev()">< Previous</button>
+      </div>
+      <div class="col-lg-4">
+        <button type="button" class="btn btn-primary prev" (click)="onClickPreview()">Preview</button>
+      </div>
+      <div class="col-lg-4">
+        <button class="btn btn-primary r_float">Submit</button>
+      </div>
+    </div> -->
+
+
+    <div class="form-group">
+      <button type="button" class="btn btn-primary" (click)="onClickPrev()">< Previous</button>
+      <button class="btn btn-primary r_float">Submit</button>
+      <p></p>
+      <div class="alert alert-danger" *ngIf="Form1.submitted && !isValidFormSubmitted">
+        Please fill out all required fields / correct the errors and try again.
+      </div>
+      <div class="alert alert-success alert-dismissible fade show" *ngIf="Form1.submitted && isValidFormSubmitted">
+      <!-- <div class="alert alert-success alert-dismissible fade show" *ngIf="Form1.submitted && isValidFormSubmitted">  -->
+        <div *ngIf="isValidFormSubmitted">
+          <strong>Success!</strong> Registration complete.
+          <button type="button" class="close" data-dismiss="alert" (click)="onFormReset(Form1)">&times;</button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+
+
+<!-- <form #Form3="ngForm" (ngSubmit)="onFormSubmit(Form3)" class="container div_3 no-display a1"> -->
+<!--
+  <div class="form-group div_3 no-display" id="div_3">
+    <H4>Step 3: Enter your email address and mobile number</H4>
+    <div class="form-group">
+      <button type="button" class="btn btn-primary" (click)="onClickPrev()">Previous</button>
+      <button class="btn btn-primary r_float">Submit</button>
+      <p></p>
+      <div class="alert alert-danger" *ngIf="Form1.submitted && !isValidFormSubmitted">
+        Please fill out all required fields and/or correct the errors and try again.
+      </div>
+      <div class="alert alert-success alert-dismissible fade show" *ngIf="Form1.submitted && isValidFormSubmitted">
+        <div *ngIf="isValidFormSubmitted">
+          <strong>Success!</strong> Registration complete.
+          <button type="button" class="close" data-dismiss="alert" (click)="onFormReset(Form1)">&times;</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="onClick()">Next</button>
+    </div>
+
+  </div>  -->
+
+</form>
+

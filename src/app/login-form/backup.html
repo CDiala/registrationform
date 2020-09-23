@@ -1,0 +1,163 @@
+<!--extracted from login-form.html-->
+
+<form #Form1="ngForm" (ngSubmit)="onFormSubmit(Form1)" class = "container">
+    <h4 class="h4">REGISTRATION</h4>
+    <div class="form-group div_1 display" id="div_1">
+      <H4>Step 1: Create login credentials</H4>
+      <div class="form-group">
+        <label for="userName">User Name</label>
+        <input required minlength="3" ngModel name="userName" #userName="ngModel" 
+        (change)="log(userName.value)" 
+        id="userName" type="text" class="form-control">
+        <div class="alert alert-danger" *ngIf="userName.touched && !userName.valid" >
+          <div *ngIf="userName.errors.required">User Name is required</div>
+          <div *ngIf="userName.errors.minlength">User Name is less than minlength</div>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <div class="form-group">
+          <label for="userPassword">Password</label>
+          <input required id="userPassword" ngModel name="Password" #Password="ngModel" 
+          (change)="log(Password.value)" 
+          type="password" class="form-control">
+          <div class="alert alert-danger" *ngIf="Password.touched && !Password.valid" >
+            <div *ngIf="Password.errors.required">Password is required</div>
+            <!-- <div *ngIf="Password.errors.minlength">Password is less than minlength</div> -->
+          </div>
+        </div> 
+      </div>
+  
+      <div class="form-group">
+        <button type="button" class="btn btn-secondary">< Previous</button> 
+        <button type="button" class="btn btn-primary r_float" 
+        (click)="!Password.valid || !userName.valid? showText() : [onClickNext(), errClear()]">Next ></button>
+        <p></p>
+        <div class="alert alert-danger errDisplay" id="nxt_1"> 
+          <!-- Some required fields are blank.  -->
+        </div> 
+        <!-- <p></p>
+        <div class="alert alert-danger" *ngIf="[Password.error, userName.error]"> 
+          Some required fields are blank. 
+        </div> -->
+      </div>
+  
+    </div>
+  
+  <!-- </form>  -->
+  
+  <!-- <form #Form2="ngForm" (ngSubmit)="onFormSubmit(Form2)" class = "container div_2 no-display"> -->
+  
+    <div class="form-group div_2 no-display" id="div_2">
+      <H4>Step 2: Provide birth date and home address</H4>
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input required ngModel name="dtBirth" #dtBirth="ngModel" 
+        (change)="[isClientMinor(), log(dtBirth.value)]" 
+        id="dob" type="date" class="form-control dte">
+        <div class="alert alert-danger" *ngIf="dtBirth.touched && !dtBirth.valid" >
+          <div *ngIf="dtBirth.errors.required">Date of birth is required</div>
+          <!-- <div *ngIf="dtBirth.errors.minlength">User Name is less than minlength</div> -->
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <div class="form-group">
+          <label for="addy">Residential Address</label>
+          <input required id="addy" ngModel name="homeAddy" #homeAddy="ngModel" 
+          (change)="log(homeAddy.value)" type="text" class="form-control">
+          <div class="alert alert-danger" *ngIf="homeAddy.touched && !homeAddy.valid" >
+            <div *ngIf="homeAddy.errors.required">Please enter your address</div>
+            <!-- <div *ngIf="homeAddy.errors.minlength">Address is less than minimum required length</div> -->
+          </div>
+        </div> 
+      </div>
+  
+      <div class="form-group">
+        <button type="button" class="btn btn-primary" (click)="onClickPrev()">< Previous</button> 
+        <button class="btn btn-primary r_float" type="button" 
+        (click)="!homeAddy.valid || !dtBirth.valid || isClientMinor()? showText() : [onClickNext(), errClear()]">Next ></button>
+        <p></p>
+        <div class="alert alert-danger errDisplay" id="nxt_2"> 
+          <!-- Some required fields are blank.  -->
+        </div> 
+        <!-- <p></p>
+        <div class="alert alert-danger" *ngIf="Form1.submitted && !isValidFormSubmitted"> 
+          Some required fields are empty or have errors. 
+        </div> -->
+      </div>
+  
+    </div>
+  
+  <!-- </form>  -->
+  
+  
+  
+  <!-- <form #Form3="ngForm" (ngSubmit)="onFormSubmit(Form3)" class="container div_3 no-display a1"> -->
+  
+    <div class="form-group div_3 no-display" id="div_3">
+      <H4>Step 3: Enter your email address and mobile number</H4>
+      <div class="form-group">
+        <label for="email" class="control-label">Email Address</label> 
+        <input 
+        required
+        pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+        ngModel
+        name="email"
+        id="email"
+        #em="ngModel"
+        type="text" 
+        class="form-control">
+        <div class="alert alert-danger" *ngIf="em.touched && !em.valid">
+          <div *ngIf="em.errors.required">Email is required.</div>
+          <div *ngIf="em.errors.pattern">Email is invalid.</div>
+        </div>
+      </div>
+  
+  
+      <div class="form-group">
+        <div class="form-group">
+          <label for="mobileNumber">Mobile Number</label>
+          <input required ngModel name="mobileNumber" id="mobileNumber" maxlength="11" #mobNumber="ngModel" [pattern]="mobNumberPattern" #mobNumber="ngModel" class="form-control">  
+          <div class="alert alert-danger" *ngIf="mobNumber.touched && !mobNumber.valid">
+            <div *ngIf="mobNumber.errors.pattern">Mobile number not valid.</div>
+            <div *ngIf="mobNumber.errors.required">Mobile number is required.</div>  
+            <!-- <div *ngIf="mobNumber.errors && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'"> 
+              Please correct the errors and try again. 
+            </div>  -->
+          </div>
+        </div>
+      </div>
+      
+  
+  
+    <!-- <div class="alert alert-danger" *ngIf="em.touched && !em.valid">do something here</div> -->
+  
+  
+      <div class="form-group">
+        <button type="button" class="btn btn-primary" (click)="onClickPrev()">Previous</button> 
+        <button class="btn btn-primary r_float">Submit</button>
+        <p></p>
+        <div class="alert alert-danger" *ngIf="Form1.submitted && !isValidFormSubmitted"> 
+          Please fill out all required fields and/or correct the errors and try again. 
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" *ngIf="Form1.submitted && isValidFormSubmitted"> 
+          <div *ngIf="isValidFormSubmitted">
+            <strong>Success!</strong> Registration complete.
+            <button type="button" class="close" data-dismiss="alert" (click)="onFormReset(Form1)">&times;</button>
+          </div>
+          
+          
+        </div>
+        <!-- <button type="button" class="btn btn-primary" (click)="onClick()">Next</button> -->
+      </div>
+  
+    </div> 
+    
+    <!-- <div>
+      <button class="btn btn-primary">Submit</button>
+    </div> -->
+  
+  </form>
+  
+  

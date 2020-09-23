@@ -1,0 +1,88 @@
+.no-display, .errDisplay {
+    display: none;
+}
+
+.display, .errDisplay_ {
+    display: inline;
+}
+
+.c1 {
+    background-color: red;
+}
+
+.c2 {
+    background-color: green;
+}
+
+.r_float {
+    float:right;
+}
+
+.l_float {
+    float:left;
+}
+
+/* .a1 {
+    overflow: hidden; /*this helps the error div to display directly under the buttons
+} */
+
+#h4,#lbl {
+    text-align: center;
+}
+
+.required {
+    color: red;
+}
+
+#rdbM, #rdbF {
+    size: 30px;
+}
+
+.col-lg-6.form-control {
+    border: none;
+}
+
+.col-lg-4.form-control.rdbID {
+    border: none;
+}
+
+/* input.ng-valid.ng-touched {
+    border-left: 5px solid green;
+} */
+
+.form-control.ng-touched.ng-invalid {
+    border-left: 5px solid red;
+}
+
+.form-control.ng-touched.ng-valid {
+    border-left: 5px solid green;
+}
+
+/* select.form-control {
+    max-height: 146px;
+    overflow: scroll;
+    overflow-x: hidden;
+    margin-top: 0px;
+} */
+
+/* input.dte.ng-touched.ng-valid {
+    border-left: 5px solid green;
+}
+
+input.dte.ng-touched.ng-invalid {
+    border-left: 5px solid red;
+} */
+
+.error {
+    color: red;
+}
+
+img.imageFrame {
+    border: 2px solid green ;
+    width: 200;
+    height: 200;
+}
+
+#nxt_1, #nxt_2, #nxt_3 {
+    color: red;
+}
