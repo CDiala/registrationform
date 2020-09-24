@@ -86,13 +86,13 @@ export class LoginFormComponent {
     });
 
     this.stservice.getStates().subscribe((data) => {
-      this.stateList = data;
-      // console.warn(data);
+      this.stateList = data['data'];
+      // console.warn(this.stateList);
     });
 
     this.lservice.getLgaList().subscribe((dt) => {
       this.LGAList = dt;
-      // console.warn(dt);
+      console.warn(dt);
     });
 
     this.tservice.getTitles().subscribe((dat) => {
@@ -114,7 +114,7 @@ export class LoginFormComponent {
       console.log('false ' + selectedCountry);
       this.myStateNames = ['foreigner'];
       this.myNationality = 'foreigner';
-      console.log(this.myStateNames);
+      // console.log(this.myStateNames);
     }
     else {
       this.myNationality = '';
@@ -151,17 +151,18 @@ export class LoginFormComponent {
 
   onSelectState(selectedState) {
     // console.log("hello " + selectedState);
-    this.useStateID = this.stateList.find(x => x.stateName === selectedState).stateID;
+    // this.useStateID = this.stateList.find(x => x.stateName === selectedState).stateID;
     // console.clear();
     // console.log(this.LGAList);
-    this.myLGANames = this.LGAList.filter(x => x.lgaStateID === this.useStateID);
-    // console.log(this.myLGANames);
+    this.myLGANames = this.LGAList.filter(x => x.state === selectedState.lowercase);
+    // this.myLGANames = this.LGAList;
+    console.log(this.myLGANames);
 
   }
 
 
   isDropdownSelected(x): boolean {
-    console.clear();
+    // console.clear();
     console.log('here: ' +x);
     if (x.value == '') {
       return false;
@@ -381,8 +382,18 @@ export class LoginFormComponent {
     str = '';
     console.log('after' + str);
     return str;
+
   }
 
+
+  logit(str) {
+    console.log("str equals " + str);
+
+    for (let index = 0; index < this.myStateNames.length - 1; index++) {
+      console.log(this.myStateNames[index]);
+
+    }
+  }
 
   logIt(a) {
     console.log(a);

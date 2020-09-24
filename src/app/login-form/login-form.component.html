@@ -179,12 +179,12 @@
 
         <div class="col-lg-3">
           <label>State of origin</label> <span class="required"> * </span>
-          <select required ngModel name="myState" #myState="ngModel" (change)="[onSelectState(myState.value),log(myState), isDropdownSelected(myState.value)]" id='ms'
+          <select required ngModel name="myState" #myState="ngModel" (change)="[onSelectState(myState.value),log(myState.value), isDropdownSelected(myState.value)]" id='ms'
           class="form-control">
           <!-- <select required [(ngModel)]="myState" [ngModelOptions]="{standalone:true}" (change)="onSelectState()" id='ms' class="form-control"> -->
             <option value="" enabled selected hidden>Select a state...</option>
             <option *ngFor="let item of myStateNames">
-                {{item[1].data}}
+                {{item.Name}}
             </option>
           </select>
         </div>
@@ -194,7 +194,7 @@
           <select required ngModel name="myLGA" #myLGA="ngModel" class="form-control">
             <option value="" enabled selected hidden>Select an LGA...</option>
             <option *ngFor="let item of myLGANames">
-                {{item.lgaName}}
+                {{item}}
             </option>
           </select>
         </div>

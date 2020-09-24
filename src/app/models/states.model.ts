@@ -1,5 +1,5 @@
 export class States {
-  info: string;
+  // info: string;
   data: [];
   // Name: string;
 }

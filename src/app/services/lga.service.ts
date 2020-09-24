@@ -7,12 +7,12 @@ import { Lgas } from '../models/lgas.model';
 })
 export class LgaService {
 
-  apiURL: string = 'http://localhost:20937/api';
+  apiURL: string = 'http://locationsng-api.herokuapp.com/api/v1/lgas';
 
   constructor(private http: HttpClient) { }
 
   getLgaList() {
-    return this.http.get<Lgas[]>(this.apiURL + '/lga');
+    return this.http.get<Lgas[]>(this.apiURL);
   }
 
 }

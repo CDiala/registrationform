@@ -1,5 +1,5 @@
 export class Lgas {
-    lgaID: number;
-    lgaName: string; 
-    lgaStateID: number;
+    state: string;
+    alias: string;
+    lgas: [];
 }
