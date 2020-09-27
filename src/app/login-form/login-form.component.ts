@@ -1,10 +1,11 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgControl, NgForm } from '@angular/forms';
 import { CountryService } from '../services/country.service';
 import { StatesService } from '../services/states.service';
 import { LgaService } from "../services/lga.service";
 import { TitlesService } from '../services/titles.service';
 import { StatusService } from './../services/status.service';
+import NaijaStates from 'naija-state-local-government';
 import { async } from '@angular/core/testing';
 
 @Component({
@@ -43,9 +44,18 @@ export class LoginFormComponent {
   titleList: any[] = [];
   // myTitle;
   myTitleID: number;
-  statusList: any[] = [];
+  statusList: any[] = [
+    "Common Law",
+    "Divorced",
+    "Married",
+    "Separated",
+    "Single",
+    "Unknown",
+    "Widowed",
+    "Numerous"
+  ];
   myStatus;
-  myNationality = 'hello';
+  myNationality = '';
   cCountry;
   cState;
   oCountry;
@@ -62,9 +72,10 @@ export class LoginFormComponent {
   oLGANames: any[] = [];
   NLGA;
   NLGANames: any[] = [];
-
-
-
+  isControlDisabled: boolean;
+  isCControlDisabled: boolean;
+  isOControlDisabled: boolean;
+  isNControlDisabled: boolean;
 
 
   constructor(private cservice: CountryService, private stservice: StatesService,
@@ -82,7 +93,7 @@ export class LoginFormComponent {
     // console.log("expected result");
     this.cservice.getCountryList().subscribe((res) => {
       this.countryList = res;
-      // console.log(res);
+      console.log(this.countryList);
     });
 
     this.stservice.getStates().subscribe((data) => {
@@ -95,14 +106,20 @@ export class LoginFormComponent {
       console.warn(dt);
     });
 
-    this.tservice.getTitles().subscribe((dat) => {
-      this.titleList = dat;
+    this.titleList = this.tservice.getTitles();
+    // console.log(this.titleList);
+    // this.tservice.getTitles().subscribe((dat) => {
+      // this.titleList = dat;
       // console.log(dat.length);
-    })
+    // })
 
     this.sService.getStatus().subscribe((stat) => {
       this.statusList = stat;
     })
+
+    // console.log(NaijaStates.all());
+    // console.log(NaijaStates.states());
+    // console.log(NaijaStates.lgas("Oyo"))
 
   }
 
@@ -111,15 +128,23 @@ export class LoginFormComponent {
     // console.log(selectedCountry);
 
     if (selectedCountry !== 'Nigeria') {
-      console.log('false ' + selectedCountry);
-      this.myStateNames = ['foreigner'];
+      // console.log('false ' + selectedCountry);
+      // this.myStateNames = [{
+      //   Name: 'foreigner',
+      //   info: [{officialName: 'foreigner'}]
+      // }];
+      this.myState = 'foreigner'
       this.myNationality = 'foreigner';
+      this.isControlDisabled = true;
+      // this.myLGANames = [];
       // console.log(this.myStateNames);
+      // console.log(this.LGAList);
     }
     else {
-      this.myNationality = '';
+      this.isControlDisabled = false;
+      this.myNationality = 'Nigerian';
       // console.clear();
-      console.log('true' + selectedCountry);
+      // console.log('true' + selectedCountry);
       //the line below has been taken care by binding value property on country dropdown list to the countryID
 
       // this.useCountryID = this.countryList.find(x => x.countryName === selectedCountry).countryID;
@@ -135,10 +160,10 @@ export class LoginFormComponent {
       // console.log(this.stateList.filter(x => x.countryID == selectedCountryID)); //.map(x => x.stateName));
       // console.clear();
       // console.log(this.myCountry)
-      console.log(this.myStateNames);
-      console.log(this.stateList);
+      // console.log(this.myStateNames);
+      // console.log(this.stateList);
       // console.log(this.myLGANames);
-      this.myStateNames.length === 0 ? this.myLGANames = [] : this.myLGANames = this.myLGANames;
+      // this.myStateNames.length === 0 ? this.myLGANames = [] : this.myLGANames = this.myLGANames;
       // console.log(this.myStateNames.length === 0);
       // this.myStateNames.length == 0 ? this.myLGANames == [] : this.myLGANames == this.myLGANames;
       // this.myStateNames.length === 0 ? console.log(this.myStateNames.length) : console.log(this.myLGANames.length);
@@ -149,14 +174,21 @@ export class LoginFormComponent {
 
   }
 
+
+
   onSelectState(selectedState) {
     // console.log("hello " + selectedState);
     // this.useStateID = this.stateList.find(x => x.stateName === selectedState).stateID;
     // console.clear();
     // console.log(this.LGAList);
-    this.myLGANames = this.LGAList.filter(x => x.state === selectedState.lowercase);
+    // this.myLGANames = this.LGAList.filter(x => x.state === selectedState.lowercase);
+    this.myLGANames = NaijaStates.lgas(selectedState)['lgas'];
     // this.myLGANames = this.LGAList;
+    console.log(selectedState);
     console.log(this.myLGANames);
+    // console.log(this.myLGANames['lgas']);
+    // console.log(this.myLGANames['state']);
+    // console.log(this.myLGANames['lgas'].item(5));
 
   }
 
@@ -175,66 +207,97 @@ export class LoginFormComponent {
 
 
   onSelectCCountry(selectedCountry) {
-    console.clear();
-    console.log(selectedCountry);
-    this.useCountryID = this.countryList.find(x => x.countryName === selectedCountry).countryID;
-
-    this.cStateNames = this.stateList.filter(x => x.countryID === <number>this.useCountryID); //.map(x => x.stateName);
-    // this.cStateNames = this.stateList.filter(x => x.countryID == selectedCountryID); //.map(x => x.stateName);
-
-    this.cStateNames.length === 0 ? this.cLGANames = [] : this.cLGANames = this.cLGANames;
-
+    if (selectedCountry !== 'Nigeria') {
+      this.cState = 'foreigner'
+      // this.myNationality = 'foreigner';
+      this.isCControlDisabled = true;
+    }
+    else {
+      this.isCControlDisabled = false;
+      this.cStateNames = this.stateList;
+    }
   }
 
   onSelectCState(selectedState) {
-    this.useStateID = this.stateList.find(x => x.stateName === selectedState).stateID;
-    // console.clear();
-    console.warn(this.useStateID);
-    this.cLGANames = this.LGAList.filter(x => x.lgaStateID === this.useStateID);
+    // this.useStateID = this.stateList.find(x => x.stateName === selectedState).stateID;
+    // // console.clear();
+    // console.warn(this.useStateID);
+    // this.cLGANames = this.LGAList.filter(x => x.lgaStateID === this.useStateID);
+
+    this.cLGANames = NaijaStates.lgas(selectedState)['lgas'];
+    // this.myLGANames = this.LGAList;
+    console.log(selectedState);
+    console.log(this.cLGANames);
 
   }
 
 
 
   onSelectOCountry(selectedCountry) {
-    console.clear();
-    console.log(selectedCountry);
-    this.useCountryID = this.countryList.find(x => x.countryName === selectedCountry).countryID;
+    // console.clear();
+    // console.log(selectedCountry);
+    // this.useCountryID = this.countryList.find(x => x.countryName === selectedCountry).countryID;
 
-    this.oStateNames = this.stateList.filter(x => x.countryID === <number>this.useCountryID); //.map(x => x.stateName);
-    // this.cStateNames = this.stateList.filter(x => x.countryID == selectedCountryID); //.map(x => x.stateName);
+    // this.oStateNames = this.stateList.filter(x => x.countryID === <number>this.useCountryID); //.map(x => x.stateName);
+    // // this.cStateNames = this.stateList.filter(x => x.countryID == selectedCountryID); //.map(x => x.stateName);
 
-    this.oStateNames.length === 0 ? this.oLGANames = [] : this.oLGANames = this.oLGANames;
-
+    // this.oStateNames.length === 0 ? this.oLGANames = [] : this.oLGANames = this.oLGANames;
+    if (selectedCountry !== 'Nigeria') {
+      this.oState = 'foreigner'
+      // this.myNationality = 'foreigner';
+      this.isOControlDisabled = true;
+    }
+    else {
+      this.isOControlDisabled = false;
+      this.oStateNames = this.stateList;
+    }
   }
 
   onSelectOState(selectedState) {
-    this.useStateID = this.stateList.find(x => x.stateName === selectedState).stateID;
-    // console.clear();
-    console.warn(this.useStateID);
-    this.oLGANames = this.LGAList.filter(x => x.lgaStateID === this.useStateID);
-
+    // this.useStateID = this.stateList.find(x => x.stateName === selectedState).stateID;
+    // // console.clear();
+    // console.warn(this.useStateID);
+    // this.oLGANames = this.LGAList.filter(x => x.lgaStateID === this.useStateID);
+    this.oLGANames = NaijaStates.lgas(selectedState)['lgas'];
+    // this.myLGANames = this.LGAList;
+    // console.log(selectedState);
+    // console.log(this.oLGANames);
   }
 
 
 
 
   onSelectNCountry(NOKCountry) {
-    console.clear();
-    console.log(NOKCountry);
-    this.useCountryID = this.countryList.find(x => x.countryName === NOKCountry).countryID;
+    // console.clear();
+    // console.log(NOKCountry);
+    // this.useCountryID = this.countryList.find(x => x.countryName === NOKCountry).countryID;
 
-    this.NStateNames = this.stateList.filter(x => x.countryID === <number>this.useCountryID); //.map(x => x.stateName);
+    // this.NStateNames = this.stateList.filter(x => x.countryID === <number>this.useCountryID); //.map(x => x.stateName);
 
-    this.NStateNames.length === 0 ? this.NLGANames = [] : this.NLGANames = this.NLGANames;
-
+    // this.NStateNames.length === 0 ? this.NLGANames = [] : this.NLGANames = this.NLGANames;
+    if (NOKCountry !== 'Nigeria') {
+      this.NState = 'foreigner'
+      // this.myNationality = 'foreigner';
+      this.isNControlDisabled = true;
+    }
+    else {
+      this.isNControlDisabled = false;
+      this.NStateNames = this.stateList;
+    }
   }
 
   onSelectNState(NOKState) {
-    this.useStateID = this.stateList.find(x => x.stateName === NOKState).stateID;
-    // console.clear();
-    console.warn(this.useStateID);
-    this.NLGANames = this.LGAList.filter(x => x.lgaStateID === this.useStateID);
+    // this.useStateID = this.stateList.find(x => x.stateName === NOKState).stateID;
+    // // console.clear();
+    // console.warn(this.useStateID);
+    // this.NLGANames = this.LGAList.filter(x => x.lgaStateID === this.useStateID);
+
+
+    this.NLGANames = NaijaStates.lgas(NOKState)['lgas'];
+    // this.myLGANames = this.LGAList;
+    // console.log(selectedState);
+    // console.log(this.cLGANames);
+
 
   }
 
@@ -302,6 +365,8 @@ export class LoginFormComponent {
       return false;
     }
   }
+
+
 
 
   onclickFinal(str: NgForm) {

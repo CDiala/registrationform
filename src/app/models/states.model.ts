@@ -1,5 +1,8 @@
 export class States {
-  // info: string;
-  data: [];
+  // info: [];
+  data: [{
+    Name: string,
+    Info: []
+  }];
   // Name: string;
 }

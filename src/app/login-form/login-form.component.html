@@ -13,7 +13,7 @@
           (change)="log(myTitle.value)">
             <option value="" disabled selected hidden>Select a title...</option>
             <option *ngFor="let item of titleList">
-                {{item.titleName}}
+                {{item}}
             </option>
           </select>
           <div *ngIf="myTitle.touched && !myTitle.valid && myTitle.errors.required" class="error">Title is required.</div>
@@ -112,7 +112,7 @@
           <label>Marital Status</label> <span class="required"> * </span>
           <select required ngModel name="mStatus" #mStatus="ngModel" class="form-control">
             <option value="" disabled selected hidden>Select an option...</option>
-            <option *ngFor="let item of statusList"> {{item.statusName}} </option>
+            <option *ngFor="let item of statusList"> {{item}} </option>
           </select>
           <div *ngIf="mStatus.touched && !mStatus.valid" class="error">Marital Status is required.</div>
 
@@ -156,7 +156,8 @@
         <div class="col-lg-3">
           <label>Country</label> <span class="required"> * </span>
           <!-- <select [(ngModel)]="myCountry" name="myCountry" (change)="[onSelectCountry(myCountry.value),log(myState.value)]" class="form-control"> -->
-          <select required ngModel name="myCountry" #myCountry="ngModel" (change)="[onSelectCountry(myCountry.value),log(myState.value)]" class="form-control">
+          <select required ngModel name="myCountry" #myCountry="ngModel"
+          (change)="[onSelectCountry(myCountry.value),log(myState.value)]" class="form-control">
             <option value="" disabled selected hidden>Select a country...</option>
             <option *ngFor="let item of countryList" value = "{{ item.name }}">
                 {{item.name}}
@@ -179,23 +180,31 @@
 
         <div class="col-lg-3">
           <label>State of origin</label> <span class="required"> * </span>
-          <select required ngModel name="myState" #myState="ngModel" (change)="[onSelectState(myState.value),log(myState.value), isDropdownSelected(myState.value)]" id='ms'
+          <select [required]="!isControlDisabled" ngModel name="myState" #myState="ngModel"
+          (change)="[onSelectState(myState.value),log(myState.value), isDropdownSelected(myState.value)]" id='ms'
+          [disabled]="isControlDisabled"
           class="form-control">
           <!-- <select required [(ngModel)]="myState" [ngModelOptions]="{standalone:true}" (change)="onSelectState()" id='ms' class="form-control"> -->
-            <option value="" enabled selected hidden>Select a state...</option>
-            <option *ngFor="let item of myStateNames">
-                {{item.Name}}
+            <option value="" enabled selected hidden
+            [textContent]="isControlDisabled? 'foreigner' : 'Select a state...'"></option>
+            <ng-container *ngIf="!isControlDisabled">
+              <option *ngFor="let item of myStateNames">
+                {{item.info['officialName']}}
             </option>
+            </ng-container>
           </select>
         </div>
 
         <div class="col-lg-3">
           <label>LGA</label> <span class="required"> * </span>
-          <select required ngModel name="myLGA" #myLGA="ngModel" class="form-control">
-            <option value="" enabled selected hidden>Select an LGA...</option>
-            <option *ngFor="let item of myLGANames">
+          <select required ngModel name="myLGA" #myLGA="ngModel" [disabled]="isControlDisabled" class="form-control">
+            <option value="" enabled selected hidden
+            [textContent]="isControlDisabled? 'foreigner' : 'Select a state...'"></option>
+            <ng-container *ngIf="!isControlDisabled">
+              <option *ngFor="let item of myLGANames">
                 {{item}}
             </option>
+            </ng-container>
           </select>
         </div>
 
@@ -282,11 +291,12 @@
           <input required minlength="5" ngModel name="cAddy" #cAddy="ngModel"
           (change)="log(cAddy.value)"
           id="cAddy" type="text" class="form-control">
-          <div class="error" *ngIf="cAddy.touched && !cAddy.valid">Contact Address is required.</div>
-          <!-- <div class="alert alert-danger" *ngIf="cAddy.touched && !cAddy.valid" >
+          <!-- <div class="error" *ngIf="cAddy.touched && !cAddy.valid">Contact Address is required.</div> -->
+          <div class="error" *ngIf="cAddy.touched && !cAddy.valid" >
+          <!-- <div class="alert alert-danger" *ngIf="cAddy.touched && !cAddy.valid" > -->
             <div *ngIf="cAddy.errors.required">Contact Address is required</div>
             <div *ngIf="cAddy.errors.minlength">Contact Address is less than minimum length</div>
-          </div>   -->
+          </div>
         </div>
       </div>
 
@@ -296,31 +306,43 @@
         <!-- create new methds for the country,state and LGA controls here -->
         <div class="col-lg-3">
           <label>Country</label> <span class="required"> * </span>
-          <select required ngModel name="cCountry" #cCountry="ngModel" (change)="onSelectCCountry(cCountry.value)" class="form-control">
+          <select required ngModel name="cCountry" #cCountry="ngModel"
+          (change)="onSelectCCountry(cCountry.value)" class="form-control">
             <option value="" disabled selected hidden>Select a country...</option>
-            <option *ngFor="let item of countryList">
-                {{item.countryName}}
+            <option *ngFor="let item of countryList"  value = "{{ item.name }}">
+                {{item.name}}
             </option>
           </select>
+
+
         </div>
 
         <div class="col-lg-3">
           <label>State</label> <span class="required"> * </span>
-          <select required ngModel name="cState" #cState="ngModel" (change)="onSelectCState(cState.value)" id='cs' class="form-control">
-            <option value="" enabled selected hidden>Select a state...</option>
-            <option *ngFor="let item of cStateNames">
-                {{item.stateName}}
-            </option>
+          <select [required]="!isCControlDisabled" ngModel name="cState" #cState="ngModel"
+          (change)="onSelectCState(cState.value)" id='cs'
+          [disabled]="isCControlDisabled" class="form-control">
+            <option value="" enabled selected hidden
+            [textContent]="isCControlDisabled? 'foreigner' : 'Select a state...'"></option>
+            <ng-container *ngIf="!isCControlDisabled">
+              <option *ngFor="let item of cStateNames">
+                {{item.info['officialName']}}
+              </option>
+            </ng-container>
           </select>
         </div>
 
         <div class="col-lg-3">
           <label>LGA</label> <span class="required"> * </span>
-          <select required ngModel name="cLGA" #cLGA="ngModel" class="form-control">
-            <option value="" enabled selected hidden>Select an LGA...</option>
-            <option *ngFor="let item of cLGANames">
-                {{item.lgaName}}
+          <select [required]="!isCControlDisabled" ngModel name="cLGA" #cLGA="ngModel"
+          [disabled]="isCControlDisabled" class="form-control">
+            <option value="" enabled selected hidden
+            [textContent]="isCControlDisabled? 'foreigner' : 'Select an LGA...'"></option>
+            <ng-container *ngIf="!isCControlDisabled">
+              <option *ngFor="let item of cLGANames">
+                {{item}}
             </option>
+            </ng-container>
           </select>
         </div>
 
@@ -465,28 +487,37 @@
           <select required ngModel name="oCountry" #oCountry="ngModel" (change)="onSelectOCountry(oCountry.value)" class="form-control">
             <option value="" disabled selected hidden>Select a country...</option>
             <option *ngFor="let item of countryList">
-                {{item.countryName}}
+                {{item.name}}
             </option>
           </select>
         </div>
 
         <div class="col-lg-3">
           <label>State</label> <span class="required"> * </span>
-          <select required ngModel name="oState" #oState="ngModel" (change)="onSelectOState(oState.value)" id='os' class="form-control">
-            <option value="" enabled selected hidden>Select a state...</option>
-            <option *ngFor="let item of oStateNames">
-                {{item.stateName}}
-            </option>
+          <select [required]="!isOControlDisabled" ngModel name="oState" #oState="ngModel"
+          (change)="onSelectOState(oState.value)" id='os'
+          [disabled]="isOControlDisabled" class="form-control">
+            <option value="" enabled selected hidden
+            [textContent]="isOControlDisabled? 'foreigner' : 'Select a state...'"></option>
+            <ng-container *ngIf="!isOControlDisabled">
+              <option *ngFor="let item of oStateNames">
+                {{item.info['officialName']}}
+              </option>
+            </ng-container>
           </select>
         </div>
 
         <div class="col-lg-3">
           <label>LGA</label> <span class="required"> * </span>
-          <select required ngModel name="oLGA" #oLGA="ngModel" class="form-control">
-            <option value="" enabled selected hidden>Select an LGA...</option>
-            <option *ngFor="let item of oLGANames">
-                {{item.lgaName}}
-            </option>
+          <select [required]="!isOControlDisabled" ngModel name="oLGA" #oLGA="ngModel"
+          [disabled]="isOControlDisabled" class="form-control">
+            <option value="" enabled selected hidden
+            [textContent]="isOControlDisabled? 'foreigner' : 'Select an LGA...'"></option>
+            <ng-container *ngIf="!isOControlDisabled">
+              <option *ngFor="let item of oLGANames">
+                {{item}}
+              </option>
+            </ng-container>
           </select>
         </div>
 
@@ -554,7 +585,7 @@
           <select required ngModel name="pState" #pState="ngModel" id='ps' class="form-control">
             <option value="" enabled selected hidden>Select a state...</option>
             <option *ngFor="let item of stateList">
-                {{item.stateName}}
+                {{item.info['officialName']}}
             </option>
           </select>
         </div>
@@ -659,7 +690,7 @@
           <select ngModel name="myNTitle" #myNTitle="ngModel" id='Nmt' class="form-control">
             <option value="" disabled selected hidden>Select a title...</option>
             <option *ngFor="let item of titleList">
-                {{item.titleName}}
+                {{item}}
             </option>
           </select> <br>
         </div>
@@ -790,31 +821,40 @@
         <!-- create new methds for the country,state and LGA controls here -->
         <div class="col-lg-3">
           <label>Country</label> <span class="required"> * </span>
-          <select required ngModel name="NCountry" #NCountry="ngModel" (change)="onSelectNCountry(NCountry.value)" class="form-control">
+          <select required ngModel name="NCountry" #NCountry="ngModel"
+          (change)="onSelectNCountry(NCountry.value)" class="form-control">
             <option value="" disabled selected hidden>Select a country...</option>
             <option *ngFor="let item of countryList">
-                {{item.countryName}}
+                {{item.name}}
             </option>
           </select>
         </div>
 
         <div class="col-lg-3">
           <label>State</label> <span class="required"> * </span>
-          <select required ngModel name="NState" #NState="ngModel" (change)="onSelectNState(NState.value)" class="form-control">
-            <option value="" enabled selected hidden>Select a state...</option>
-            <option *ngFor="let item of NStateNames">
-                {{item.stateName}}
-            </option>
+          <select [required]="!isNControlDisabled" ngModel name="NState" #NState="ngModel"
+          (change)="onSelectNState(NState.value)" [disabled]="isNControlDisabled" class="form-control">
+            <option value="" enabled selected hidden
+            [textContent]="isNControlDisabled? 'foreigner' : 'Select a state...'"></option>
+            <ng-container *ngIf="!isNControlDisabled">
+              <option *ngFor="let item of NStateNames">
+                {{item.info['officialName']}}
+              </option>
+            </ng-container>
           </select>
         </div>
 
         <div class="col-lg-3">
           <label>LGA</label> <span class="required"> * </span>
-          <select required ngModel name="NLGA" #NLGA="ngModel" class="form-control">
-            <option value="" enabled selected hidden>Select an LGA...</option>
-            <option *ngFor="let item of NLGANames">
-                {{item.lgaName}}
-            </option>
+          <select [required]="!isNControlDisabled" ngModel name="NLGA" #NLGA="ngModel"
+          [disabled]="isNControlDisabled" class="form-control">
+            <option value="" enabled selected hidden
+            [textContent]="isNControlDisabled? 'foreigner' : 'Select an LGA...'"></option>
+            <ng-container *ngIf="!isNControlDisabled">
+              <option *ngFor="let item of NLGANames">
+                {{item}}
+              </option>
+            </ng-container>
           </select>
         </div>
 
