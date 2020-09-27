@@ -93,7 +93,7 @@ export class LoginFormComponent {
     // console.log("expected result");
     this.cservice.getCountryList().subscribe((res) => {
       this.countryList = res;
-      console.log(this.countryList);
+      // console.log(this.countryList);
     });
 
     this.stservice.getStates().subscribe((data) => {
@@ -103,7 +103,7 @@ export class LoginFormComponent {
 
     this.lservice.getLgaList().subscribe((dt) => {
       this.LGAList = dt;
-      console.warn(dt);
+      // console.warn(dt);
     });
 
     this.titleList = this.tservice.getTitles();
@@ -184,8 +184,8 @@ export class LoginFormComponent {
     // this.myLGANames = this.LGAList.filter(x => x.state === selectedState.lowercase);
     this.myLGANames = NaijaStates.lgas(selectedState)['lgas'];
     // this.myLGANames = this.LGAList;
-    console.log(selectedState);
-    console.log(this.myLGANames);
+    // console.log(selectedState);
+    // console.log(this.myLGANames);
     // console.log(this.myLGANames['lgas']);
     // console.log(this.myLGANames['state']);
     // console.log(this.myLGANames['lgas'].item(5));
@@ -195,7 +195,7 @@ export class LoginFormComponent {
 
   isDropdownSelected(x): boolean {
     // console.clear();
-    console.log('here: ' +x);
+    // console.log('here: ' +x);
     if (x.value == '') {
       return false;
     }
@@ -443,9 +443,9 @@ export class LoginFormComponent {
   }
 
   log(str): string {
-    console.log(str);
-    str = '';
-    console.log('after' + str);
+    // console.log(str);
+    // str = '';
+    // console.log('after' + str);
     return str;
 
   }
