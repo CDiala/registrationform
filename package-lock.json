@@ -7909,11 +7909,6 @@
       "resolved": "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.8.tgz",
       "integrity": "sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA=="
     },
-    "naija-state-local-government": {
-      "version": "1.1.1",
-      "resolved": "https://registry.npmjs.org/naija-state-local-government/-/naija-state-local-government-1.1.1.tgz",
-      "integrity": "sha512-WP5OTkI3Rpd56CGSMqd6QtC4CmiVQjY09YipuENjhiOkWP69u5oOmmkXOZwPUSslvdGfss5GfhdevMAbnznQWg=="
-    },
     "nanomatch": {
       "version": "1.2.13",
       "resolved": "https://registry.npmjs.org/nanomatch/-/nanomatch-1.2.13.tgz",
