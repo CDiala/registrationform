@@ -6,7 +6,7 @@ import { LgaService } from "../services/lga.service";
 import { TitlesService } from '../services/titles.service';
 import { StatusService } from './../services/status.service';
 import NaijaStates from 'naija-state-local-government';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 @Component({
   selector: 'login-form',
